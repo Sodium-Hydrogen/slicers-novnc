@@ -1,6 +1,6 @@
 #!/bin/bash
-# Push a tag for our repository if upstream PrusaSlicer generates a new release
-# This was forked from https://github.com/dmagyar/prusaslicer-vnc-docker/blob/main/tagLatestPrusaSlicer.sh
+# Push a tag for our repository if upstream SuperSlicer generates a new release
+# This was forked from https://github.com/helfrichmichael/prusaslicer-novnc/blob/main/tag_latest_prusaslicer.sh
 
 set -eu
 
@@ -10,8 +10,8 @@ set -eu
 # return codes to indicate whether or not continuing with the workflow is appropriate
 GH_ACTION="y"
 
-# LATEST_RELEASE -- where to find the latest PrusaSlicer release
-LATEST_RELEASE="https://api.github.com/repos/prusa3d/PrusaSlicer/releases/latest"
+# LATEST_RELEASE -- where to find the latest SuperSlicer release
+LATEST_RELEASE="https://api.github.com/repos/supermerill/SuperSlicer/releases/latest"
 
 # ** end of configurable variables **
 

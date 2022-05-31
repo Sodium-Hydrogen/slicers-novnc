@@ -12,7 +12,7 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists && \
     mkdir -p /usr/share/desktop-directories
 
-# Get all of the remaining dependencies for the OS, VNC, and Prusaslicer.
+# Get all of the remaining dependencies for the OS, VNC, and Superslicer.
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends lxterminal nano wget openssh-client rsync ca-certificates xdg-utils htop tar xzip gzip bzip2 zip unzip && \
     rm -rf /var/lib/apt/lists
@@ -25,19 +25,20 @@ RUN apt update && apt install -y --no-install-recommends --allow-unauthenticated
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Prusaslicer
+# Install Superslicer
 # Many of the commands below were derived and pulled from previous work by dmagyar on GitHub.
 # Here's their Dockerfile for reference https://github.com/dmagyar/prusaslicer-vnc-docker/blob/main/Dockerfile.amd64
 WORKDIR /slic3r
-ADD get_latest_prusaslicer_release.sh /slic3r
+ADD get_latest_superslicer_release.sh /slic3r
 
-RUN chmod +x /slic3r/get_latest_prusaslicer_release.sh \
-  && latestSlic3r=$(/slic3r/get_latest_prusaslicer_release.sh url) \
-  && slic3rReleaseName=$(/slic3r/get_latest_prusaslicer_release.sh name) \
+RUN chmod +x /slic3r/get_latest_superslicer_release.sh \
+  && latestSlic3r=$(/slic3r/get_latest_superslicer_release.sh url) \
+  && slic3rReleaseName=$(/slic3r/get_latest_superslicer_release.sh name) \
   && curl -sSL ${latestSlic3r} > ${slic3rReleaseName} \
   && rm -f /slic3r/releaseInfo.json \
   && mkdir -p /slic3r/slic3r-dist \
-  && tar -xjf ${slic3rReleaseName} -C /slic3r/slic3r-dist --strip-components 1 \
+  && tar -xzf ${slic3rReleaseName} -C /slic3r/slic3r-dist --strip-components 1 \
+  && ls /slic3r/slic3r-dist/ \
   && rm -f /slic3r/${slic3rReleaseName} \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get autoclean \
@@ -65,5 +66,5 @@ EXPOSE 8080
 VOLUME /configs/
 VOLUME /prints/
 
-# It's time! Let's get to work! We use /configs/ as a bindable volume for Prusaslicers configurations. We use /prints/ to provide a location for STLs and GCODE files.
+# It's time! Let's get to work! We use /configs/ as a bindable volume for Superslicers configurations. We use /prints/ to provide a location for STLs and GCODE files.
 CMD ["bash", "-c", "chown -R slic3r:slic3r /home/slic3r/ /configs/ /prints/ /dev/stdout && exec gosu slic3r supervisord"]

@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: sergeysova/jq-action@v2 # Needed for parsing the JSON of the Prusaslicer releases.
+      - uses: sergeysova/jq-action@v2 # Needed for parsing the JSON of the Superslicer releases.
       - name: checkout repo content
         uses: actions/checkout@v2 # Checkout the repository content to GitHub's runner.
-      - name: Tag the latest Prusaslicer if available
+      - name: Tag the latest Superslicer if available
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          chmod +x ./tag_latest_prusaslicer.sh
-          ./tag_latest_prusaslicer.sh
+          chmod +x ./tag_latest_superslicer.sh
+          ./tag_latest_superslicer.sh

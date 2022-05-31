@@ -1,6 +1,6 @@
 #!/bin/bash
   
-image="mikeah/prusaslicer-novnc"  
+image="sodiumhydrogen/superslicer-novnc"  
   
 # Set the timestamp
 timestamp=$(date +%Y.%m.%d.%H%M%S)  
