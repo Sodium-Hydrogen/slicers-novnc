@@ -1,9 +1,11 @@
 # Get and install Easy noVNC.
 FROM golang:1.14-buster AS easy-novnc-build
+RUN apt update && apt install git
+RUN git clone https://github.com/sodium-hydrogen/easy-novnc.git /src
 WORKDIR /src
-RUN go mod init build && \
-    go get github.com/geek1011/easy-novnc@v1.1.0 && \
-    go build -o /bin/easy-novnc github.com/geek1011/easy-novnc
+RUN go mod download
+RUN go build .
+RUN ls -al /src/easy-novnc
 
 # Get TigerVNC and Supervisor for isolating the container.
 FROM debian:buster
@@ -58,7 +60,7 @@ RUN chmod +x /slic3r/get_latest_superslicer_release.sh \
   && echo "XDG_DOWNLOAD_DIR=\"/prints/\"" >> /home/slic3r/.config/user-dirs.dirs \
   && echo "file:///prints prints" >> /home/slic3r/.gtk-bookmarks 
 
-COPY --from=easy-novnc-build /bin/easy-novnc /usr/local/bin/
+COPY --from=easy-novnc-build /src/easy-novnc /usr/local/bin/
 COPY menu.xml /etc/xdg/openbox/
 COPY supervisord.conf /etc/
 EXPOSE 8080
