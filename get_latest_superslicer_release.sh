@@ -61,6 +61,6 @@ elif [[ "$1" == "url_ver" ]]; then
 
 elif [[ "$1" == "name_ver" ]]; then
    
-  echo "${allReleases}" | jq --arg VERSION "$VER" -r '.[] | .assets[] | .name | select(test("SuperSlicer_" + $VERSION + "\\+_linux64_.+.tar.zip"))'
+  echo "${allReleases}" | jq --arg VERSION "$VER" -r '.[] | .assets[] | .name | select(test("SuperSlicer_" + $VERSION + "+_linux64_.+.tar.zip"))'
 
 fi

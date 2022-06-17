@@ -8,7 +8,7 @@ RUN go build .
 RUN ls -al /src/easy-novnc
 
 # Get TigerVNC and Supervisor for isolating the container.
-FROM debian:buster
+FROM debian:buster as base-gui
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends openbox tigervnc-standalone-server supervisor gosu && \
     rm -rf /var/lib/apt/lists && \
@@ -33,9 +33,51 @@ RUN apt update && apt install -y --no-install-recommends --allow-unauthenticated
 WORKDIR /slic3r
 ADD get_latest_superslicer_release.sh /slic3r
 
+FROM base-gui as latest-release
+
 RUN chmod +x /slic3r/get_latest_superslicer_release.sh \
   && latestSlic3r=$(/slic3r/get_latest_superslicer_release.sh url) \
   && slic3rReleaseName=$(/slic3r/get_latest_superslicer_release.sh name) \
+  && curl -sSL ${latestSlic3r} > ${slic3rReleaseName} \
+  && rm -f /slic3r/releaseInfo.json \
+  && mkdir -p /slic3r/slic3r-dist \
+  && tar -xzf ${slic3rReleaseName} -C /slic3r/slic3r-dist --strip-components 1 \
+  && ls /slic3r/slic3r-dist/ \
+  && rm -f /slic3r/${slic3rReleaseName} \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get autoclean \
+  && groupadd slic3r \
+  && useradd -g slic3r --create-home --home-dir /home/slic3r slic3r \
+  && mkdir -p /slic3r \
+  && mkdir -p /configs \
+  && mkdir -p /prints/ \
+  && chown -R slic3r:slic3r /slic3r/ /home/slic3r/ /prints/ /configs/ \
+  && locale-gen en_US \
+  && mkdir /configs/.local \
+  && mkdir -p /configs/.config/ \
+  && ln -s /configs/.config/ /home/slic3r/ \
+  && mkdir -p /home/slic3r/.config/ \
+  # We can now set the Download directory for Firefox and other browsers. 
+  # We can also add /prints/ to the file explorer bookmarks for easy access.
+  && echo "XDG_DOWNLOAD_DIR=\"/prints/\"" >> /home/slic3r/.config/user-dirs.dirs \
+  && echo "file:///prints prints" >> /home/slic3r/.gtk-bookmarks 
+
+COPY --from=easy-novnc-build /src/easy-novnc /usr/local/bin/
+COPY menu.xml /etc/xdg/openbox/
+COPY supervisord.conf /etc/
+EXPOSE 8080
+
+VOLUME /configs/
+VOLUME /prints/
+
+# It's time! Let's get to work! We use /configs/ as a bindable volume for Superslicers configurations. We use /prints/ to provide a location for STLs and GCODE files.
+CMD ["bash", "-c", "chown -R slic3r:slic3r /home/slic3r/ /configs/ /prints/ /dev/stdout && exec gosu slic3r supervisord"]
+
+FROM base-gui as nightly-release
+
+RUN chmod +x /slic3r/get_latest_superslicer_release.sh \
+  && latestSlic3r=$(/slic3r/get_latest_superslicer_release.sh url_ver nightly) \
+  && slic3rReleaseName=$(/slic3r/get_latest_superslicer_release.sh name_ver nightly) \
   && curl -sSL ${latestSlic3r} > ${slic3rReleaseName} \
   && rm -f /slic3r/releaseInfo.json \
   && mkdir -p /slic3r/slic3r-dist \
