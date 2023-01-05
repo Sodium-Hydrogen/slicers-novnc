@@ -1,9 +1,7 @@
 name: Publish to Docker
 
 on:
-  push:
-    tags:
-      - '*'
+  create
 
 jobs:
   push_to_registry:
