@@ -4,17 +4,11 @@ This is a fork of [Prusaslicer noVNC](https://github.com/helfrichmichael/prusasl
 
 ## Overview
 
-This is a super basic noVNC build using supervisor to serve Superslicer in your favorite web browser. This was primarily built for users using the [popular unraid NAS software](https://unraid.net), to allow them to quickly hop in a browser, slice, and upload their favorite 3D prints.
+This is a super basic noVNC build using supervisor to serve Superslicer in your favorite web browser. 
 
-A lot of this was branched off of dmagyar's awesome [prusaslicer-vnc-docker](https://hub.docker.com/r/dmagyar/prusaslicer-vnc-docker/) project, but I found it to be a bit complex for my needs and thought this approach would simplify things a lot.
-
+A lot of this was branched off of helfrichmichael's awesome [prusaslicer-novnc-docker](https://github.com/helfrichmichael/prusaslicer-novnc) project, but
+I use my mobile device a decent amount of the time so I needed updates to No VNC and a couple other tweaks. 
 ## How to use
-
-**In unraid**
-
-If you're using unraid, open your Docker page and under `Template repositories`, add `https://github.com/helfrichmichael/unraid-templates` and save it. You should then be able to Add Container for superslicer-novnc. For unraid, the template will default to 6080 for the noVNC web instance.
-
-**Outside of unraid**
 
 To run this image, you can run the following command: `docker run --detach --volume=superslicer-novnc-data:/configs/ --volume=superslicer-novnc-prints:/prints/ -p 8080:8080 -e SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt" 
 --name=superslicer-novnc superslicer-novnc`

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Get the latest release of PrusaSlicer for Linux (non-AppImage) using the GitHub API
+# Get the latest release of SuperSlicer for Linux (non-AppImage) using the GitHub API
 # This was forked from https://github.com/helfrichmichael/prusaslicer-novnc/blob/main/get_latest_prusaslicer_release.sh
 
 set -eu

@@ -57,6 +57,15 @@ COPY --from=easy-novnc-build /src/easy-novnc /usr/local/bin/
 COPY menu.xml /etc/xdg/openbox/
 COPY supervisord.conf /etc/
 
+EXPOSE 8080
+
+VOLUME /configs/
+VOLUME /prints/
+
+LABEL maintainer="Mike Julander <me@mikej.tech>"
+
+# It's time! Let's get to work! We use /configs/ as a bindable volume for Superslicers configurations. We use /prints/ to provide a location for STLs and GCODE files.
+CMD ["bash", "-c", "chown -R slic3r:slic3r /home/slic3r/ /configs/ /prints/ /dev/stdout && exec gosu slic3r supervisord"]
 
 #################### lateset-release ####################
 FROM base-gui as latest-release
@@ -70,14 +79,6 @@ RUN latestSlic3r=$(/slic3r/get_latest_superslicer_release.sh url) \
 RUN rm -f /slic3r/releaseInfo.json
 RUN chown -R slic3r:slic3r /slic3r/ /home/slic3r/ /prints/ /configs/
 
-EXPOSE 8080
-
-VOLUME /configs/
-VOLUME /prints/
-
-# It's time! Let's get to work! We use /configs/ as a bindable volume for Superslicers configurations. We use /prints/ to provide a location for STLs and GCODE files.
-CMD ["bash", "-c", "chown -R slic3r:slic3r /home/slic3r/ /configs/ /prints/ /dev/stdout && exec gosu slic3r supervisord"]
-
 #################### tagged-release ####################
 FROM base-gui as tagged-release
 
@@ -90,11 +91,3 @@ RUN latestSlic3r=$(/slic3r/get_latest_superslicer_release.sh url_ver $VERSION) \
 
 RUN rm -f /slic3r/releaseInfo.json
 RUN chown -R slic3r:slic3r /slic3r/ /home/slic3r/ /prints/ /configs/
-
-EXPOSE 8080
-
-VOLUME /configs/
-VOLUME /prints/
-
-# It's time! Let's get to work! We use /configs/ as a bindable volume for Superslicers configurations. We use /prints/ to provide a location for STLs and GCODE files.
-CMD ["bash", "-c", "chown -R slic3r:slic3r /home/slic3r/ /configs/ /prints/ /dev/stdout && exec gosu slic3r supervisord"]

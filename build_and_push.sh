@@ -1,4 +1,6 @@
 #!/bin/bash
+# 
+# Supported args are --push/--prune
   
 image="sodiumhydrogen/superslicer-novnc"  
 
@@ -18,10 +20,19 @@ prerelease_version=$image:prerelease-$ptag
 docker build -t $latest -t $latest_version . --target latest-release
 docker build -t $prerelease -t $prerelease_version . --target tagged-release --build-arg VERSION=$ptag
   
-# Push with the timestamped tag, and latest image tag to Docker Hub.
-docker login
-docker push $tag
-docker push $latest
-  
-# Cleanup
-docker system prune -f
+# accept --push to push
+if [[ " $@ " =~ " --push " ]]; then
+	# Push with the timestamped tag, and latest image tag to Docker Hub.
+	docker login
+	docker push $latest
+	docker push $latest_version
+	docker push $prerelease
+	docker push $prerelease_version
+	  
+fi
+
+# accept --prune to prune
+if [[ " $@ " =~ " --prune " ]]; then
+	# Cleanup
+	docker system prune -f
+fi
