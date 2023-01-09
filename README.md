@@ -37,6 +37,17 @@ Every update pushes a total of four tags to docker hub.
 * prerelease-x.x.x 
     * Any release including prereleases with x.x.x being their tag.
 
+## Mobile Friendly Efforts
+
+The original version doesn't support mobile phones, but that is important for me.
+
+Changes that improve mobile support are:
+* Update novnc to add touch gestures to simulate mouse actions
+    * Drag two fingers: send mouse scroll
+    * Tap with two fingers: send right click
+    * Pinch with two fingers: send Ctrl + scroll
+    * Long press then drag: send center mouse click and drag
+
 ## Links
 
 [SuperSlicer](https://github.com/supermerill/SuperSlicer)
