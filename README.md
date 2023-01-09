@@ -24,6 +24,19 @@ and it will bind port `8080` to `8080`.
 If you need to change the certificate store you can add `-e SSL_CERT_FILE="/etc/ssl/certs/new-store.crt"`
 to the docker run command.
 
+## Version
+
+Every update pushes a total of four tags to docker hub.
+
+* latest
+    * This tag will include all releases that are marked as official release from the superslicer github.
+* prerelease
+    * This is all releases even those marked as prerelease. It may often be the same as latest.
+* x.x.x (version)
+    * Any version that is marked as official (non prerelease) with x.x.x being their tag
+* prerelease-x.x.x 
+    * Any release including prereleases with x.x.x being their tag.
+
 ## Links
 
 [SuperSlicer](https://github.com/supermerill/SuperSlicer)
