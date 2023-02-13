@@ -4,7 +4,7 @@ This is a fork of [Prusaslicer noVNC](https://github.com/helfrichmichael/prusasl
 
 ## Overview
 
-This is a super basic noVNC build using supervisor to serve Superslicer in your favorite web browser.
+This is a super basic noVNC build using supervisor to serve SuperSlicer in your favorite web browser.
 
 A lot of this was branched off of helfrichmichael's awesome
 [prusaslicer-novnc-docker](https://github.com/helfrichmichael/prusaslicer-novnc) project, but
@@ -33,10 +33,14 @@ Every update pushes a total of four tags to docker hub.
   * This tag will include all releases that are marked as official release from the superslicer github.
 * prerelease
   * This is all releases even those marked as prerelease. It may often be the same as latest.
-* x.x.x (version)
-  * Any version that is marked as official (non prerelease) with x.x.x being their tag
-* prerelease-x.x.x
-  * Any release including prereleases with x.x.x being their tag.
+* x.x (version)
+  * SuperSlicer versions are prusaslicer version dotted with SuperSlicer versions ex (2.4.58.2) is
+    from prusaslicer 2.4 and SuperSlicer version 58.2. These tagged images will be the latest
+    (including prereleases) release using the prusaslicer version number.
+* x.x.x.x (version)
+  * Any version that is marked as official (non prerelease) with x.x.x.x being their tag
+* prerelease-x.x.x.x
+  * Any release including prereleases with x.x.x.x being their tag.
 
 ## Mobile Friendly Efforts
 

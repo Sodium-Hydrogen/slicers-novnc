@@ -16,13 +16,16 @@ LATEST_RELEASE="https://api.github.com/repos/supermerill/SuperSlicer/releases/la
 # ** end of configurable variables **
 
 # Get the latest tagged version
-LATEST_VERSION="$(curl -SsL ${LATEST_RELEASE} | jq -r '.tag_name')"
+CURL_TEXT="$(curl -SsL ${LATEST_RELEASE} )"
+LATEST_VERSION="$(echo $CURL_TEXT | jq -r '.tag_name')"
 
-if [[ -z "${LATEST_VERSION}" ]]; then
+if [[ -z "${LATEST_VERSION}" ]] || [[ "${LATEST_VERSION}" == "null" ]]; then
 
   echo "Could not determine the latest version."
   echo "Has release naming changed from previous conventions?"
   echo "${LATEST_VERSION}"
+  echo -e "\n\n"
+  echo "$(echo $CURL_TEXT)"
   exit 1
 
 fi

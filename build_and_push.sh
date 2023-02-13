@@ -15,10 +15,11 @@ latest_version=$image:$ltag
 
 prerelease=$image:prerelease
 prerelease_version=$image:prerelease-$ptag
+prerelease_major=$image:"$(echo $ptag | perl -pe 's/^(\d+.\d+).*/\1/g' )"
 
 # Build the image -- tagged with the timestamp.
 docker build -t $latest -t $latest_version . --target latest-release
-docker build -t $prerelease -t $prerelease_version . --target tagged-release --build-arg VERSION=$ptag
+docker build -t $prerelease -t $prerelease_version -t $prerelease_major . --target tagged-release --build-arg VERSION=$ptag
   
 # accept --push to push
 if [[ " $@ " =~ " --push " ]]; then
@@ -28,6 +29,7 @@ if [[ " $@ " =~ " --push " ]]; then
 	docker push $latest_version
 	docker push $prerelease
 	docker push $prerelease_version
+	docker push $prerelease_major
 	  
 fi
 
