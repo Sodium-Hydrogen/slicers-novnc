@@ -11,13 +11,13 @@ set -eu
 GH_ACTION="y"
 
 # LATEST_RELEASE -- where to find the latest SuperSlicer release
-LATEST_RELEASE="https://api.github.com/repos/supermerill/SuperSlicer/releases/latest"
+LATEST_RELEASE="https://api.github.com/repos/supermerill/SuperSlicer/releases"
 
 # ** end of configurable variables **
 
 # Get the latest tagged version
 CURL_TEXT="$(curl -SsL ${LATEST_RELEASE} )"
-LATEST_VERSION="$(echo $CURL_TEXT | jq -r '.tag_name')"
+LATEST_VERSION="$(echo $CURL_TEXT | jq -r 'first | .tag_name')"
 
 if [[ -z "${LATEST_VERSION}" ]] || [[ "${LATEST_VERSION}" == "null" ]]; then
 
