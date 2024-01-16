@@ -22,12 +22,12 @@ if [[ $# -lt 1 ]]; then
   exit 1
 fi
 
-baseDir="/slic3r"
+baseDir="/tmp"
 mkdir -p $baseDir
 
 if [[ ! -e "$baseDir/latestReleaseInfo.json" ]]; then
 
-  curl -SsL https://api.github.com/repos/supermerill/SuperSlicer/releases/latest > $baseDir/latestReleaseInfo.json
+  curl -SsL https://api.github.com/repos/prusa3d/PrusaSlicer/releases/latest > $baseDir/latestReleaseInfo.json
 
 fi
 
@@ -35,10 +35,10 @@ releaseInfo=$(cat $baseDir/latestReleaseInfo.json)
 
 if [[ $# -gt 1 ]]; then
 
-  VER=$2
+  VER=$(echo $2 | perl -pe 's/^version_(.*)/\1/g' )
 
   if [[ ! -e "$baseDir/releases.json" ]]; then
-    curl -SsL https://api.github.com/repos/supermerill/SuperSlicer/releases > $baseDir/releases.json
+    curl -SsL https://api.github.com/repos/prusa3d/PrusaSlicer/releases > $baseDir/releases.json
   fi
 
   allReleases=$(cat $baseDir/releases.json)
@@ -47,20 +47,20 @@ fi
 
 if [[ "$1" == "url" ]]; then
 
-  echo "${releaseInfo}" | jq -r '.assets[] | .browser_download_url | select(test("SuperSlicer_.+(-\\w)?.linux64_(?!GTK3).+.tar.zip"))'
+  echo "${releaseInfo}" | jq -r '.assets[] | .browser_download_url | select(test("PrusaSlicer-[0-9.]+%2Blinux-x64-GTK3-\\d+\\.tar\\.bz2"))'
 
 elif [[ "$1" == "name" ]]; then
 
-  echo "${releaseInfo}" | jq -r '.assets[] | .name | select(test("SuperSlicer_.+(-\\w)?.linux64_(?!GTK3).+.tar.zip"))'
+  echo "${releaseInfo}" | jq -r '.assets[] | .name | select(test("PrusaSlicer-[0-9.]+\\+linux-x64-GTK3-\\d+\\.tar\\.bz2"))'
 
 elif [[ "$1" == "url_ver" ]]; then
 
   # Note: Releases sometimes have hex-encoded ascii characters tacked on
   # So version '2.0.0+' might need to be requested as '2.0.0%2B' since GitHub returns that as the download URL
-  echo "${allReleases}" | jq --arg VERSION "$VER" -r '.[] | .assets[] | .browser_download_url | select(test("SuperSlicer_" + $VERSION + "_linux64_.+.tar.zip"))'
+  echo "${allReleases}" | jq --arg VERSION "$VER" -r '.[] | .assets[] | .browser_download_url | select(test("PrusaSlicer-" + $VERSION + "%2Blinux-x64-GTK3-\\d+\\.tar\\.bz2"))'
 
 elif [[ "$1" == "name_ver" ]]; then
    
-  echo "${allReleases}" | jq --arg VERSION "$VER" -r '.[] | .assets[] | .name | select(test("SuperSlicer_" + $VERSION + "+_linux64_.+.tar.zip"))'
+  echo "${allReleases}" | jq --arg VERSION "$VER" -r '.[] | .assets[] | .name | select(test("PrusaSlicer-" + $VERSION + "\\+linux-x64-GTK3-\\d+\\.tar\\.bz2"))'
 
 fi
