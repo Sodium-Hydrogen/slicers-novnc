@@ -1,4 +1,4 @@
-# Superslicer noVNC Docker Container
+# Orca/Prusa/Super-slicer noVNC Docker Containers
 
 This is a fork of [Prusaslicer noVNC](https://github.com/helfrichmichael/prusaslicer-novnc)
 
