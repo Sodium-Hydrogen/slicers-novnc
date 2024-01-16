@@ -16,7 +16,7 @@ To run this image, you can run the following command:
 
 ```bash
 SLICER="orcaslicer"
-docker run --detach --volume=${SLICER}-novnc-data:/configs/ --volume=${SLICER}-novnc-prints:/prints/ -p 8079:8080 --name=superslicer-novnc slicer-novnc:${SLICER}
+docker run --detach --volume=${SLICER}-novnc-data:/configs/ --volume=${SLICER}-novnc-prints:/prints/ -p 8079:8080 --name=${SLICER}-novnc slicer-novnc:${SLICER}
 ```
 where `SLICER` is either prusaslicer, orcaslicer, or superslicer
 
