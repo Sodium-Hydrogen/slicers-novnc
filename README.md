@@ -8,7 +8,7 @@ This is a super basic noVNC build using supervisor to serve Orca/Prusa/Super sli
 
 A lot of this was branched off of helfrichmichael's awesome
 [prusaslicer-novnc-docker](https://github.com/helfrichmichael/prusaslicer-novnc) project, but
-I use my mobile device a decent amount of the time so I needed updates to No VNC and a couple other tweaks.
+I use my mobile device a decent amount of the time so I needed updates to noVNC and a couple other tweaks.
 
 ## How to use
 
@@ -16,7 +16,7 @@ To run this image, you can run the following command:
 
 ```bash
 SLICER="orcaslicer"
-docker run --detach --volume=${SLICER}-novnc-data:/configs/ --volume=${SLICER}-novnc-prints:/prints/ -p 8079:8080 --name=superslicer-novnc slicer-novnc:${SLICER}
+docker run --detach --volume=${SLICER}-novnc-data:/configs/ --volume=${SLICER}-novnc-prints:/prints/ -p 8079:8080 --name=${SLICER}-novnc slicer-novnc:${SLICER}
 ```
 where `SLICER` is either prusaslicer, orcaslicer, or superslicer
 
@@ -55,13 +55,11 @@ Changes that improve mobile support are:
   * Pinch with two fingers: send Ctrl + scroll
   * Long press then drag: send right mouse click and drag
 
-* Added `scale resolution` to the context menu.
-  * While I am working on minimum screen size settings for NOVNC I've added this temporary fix.
-  1. Double tap the blue menu bar of superslicer to shrink the window.
-  2. In the black desktop that appears use a single tap with two fingers to bring up the context menu.
-  3. Using only one finger select `scale resolution`.
-  4. Then opening the novnc settings you can turn on the `Move/Drag Viewport` setting.
-      * Both right and left mouse click and drag are disabled with viewport drag enabled.
+* Patches to novnc:
+  * When in window drag mode a two finger drag will act like a single finger drag.
+  * Minimum width and height easy-novnc options. By default min-width is set to 1000 because slicers do not work on phone screens.
+  * Automatically enabled drag mode if the minimum is larger than the current screen.
+  * Moved the control-bar on phones to top/bottom instead of sides.
 
 ## Links
 

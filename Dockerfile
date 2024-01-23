@@ -12,16 +12,16 @@ RUN ls -al /src/easy-novnc
 #################### base-gui ####################
 FROM debian:bookworm as base-gui
 
-RUN apt-get update -y
+RUN apt update -y
 RUN mkdir -p /usr/share/desktop-directories
 
 # Get TigerVNC and Supervisor for isolating the container.
-RUN apt-get install -y --no-install-recommends openbox tigervnc-standalone-server supervisor gosu
+RUN apt install -y --no-install-recommends openbox tigervnc-standalone-server supervisor gosu
 
 # Get all of the remaining dependencies for the OS, VNC, and slicer.
-RUN apt-get install -y --no-install-recommends lxterminal nano wget openssh-client rsync ca-certificates xdg-utils htop tar xzip gzip bzip2 zip unzip jq curl git
+RUN apt install -y --no-install-recommends lxterminal nano wget openssh-client rsync ca-certificates xdg-utils htop tar xzip gzip bzip2 zip unzip jq curl git
 
-RUN apt update && apt install -y --no-install-recommends --allow-unauthenticated \
+RUN apt install -y --no-install-recommends --allow-unauthenticated \
         xfce4 locales locales-all xdg-utils pcmanfm firefox-esr \
         libwx-perl libxmu-dev libgl1-mesa-glx libgl1-mesa-dri
 

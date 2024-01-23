@@ -6,11 +6,6 @@
                 <execute>/slic3r/slic3r-dist/bin/slicer --datadir /configs/.config/slicer/</execute>
             </action>
         </item>
-        <item label="Scale Resolution">
-            <action name="Execute">
-                <execute>/bin/bash -c "xrandr -s 1024x768"</execute>
-            </action>
-        </item>
         <item label="Terminal">
             <action name="Execute">
                 <execute>/usr/bin/x-terminal-emulator</execute>
